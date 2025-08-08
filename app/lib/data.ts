@@ -18,7 +18,14 @@ const sql = postgres(process.env.POSTGRES_URL!, {
 
 export async function fetchRevenue() {
   try {
+
+    console.log('Fetching revenue data...');
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const data = await sql`SELECT * FROM revenue`;
+
+    console.log('Data fetch completed after 3 seconds.');
+
     return data; // ✅ Asegúrate de retornar .rows
   } catch (error) {
     console.error('Database Error:', error);
@@ -109,7 +116,7 @@ export async function fetchFilteredInvoices(
       ORDER BY invoices.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
-
+//
     return invoices;
   } catch (error) {
     console.error('Database Error:', error);
@@ -156,7 +163,9 @@ export async function fetchInvoiceById(id: string) {
       amount: invoice.amount / 100,
     }));
 
+    console.log(invoice); // Invoice is an empty array []
     return invoice[0];
+
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');
